@@ -35,7 +35,14 @@ export default class GamePlay {
   }
   
   setCursor(cursor) {
-    document.getElementById('board').style.cursor = cursor;
+    const board = document.getElementById('board');
+    if (board) {
+      if (cursor === cursors.hammer) {
+        board.classList.add('hammer-cursor');
+      } else {
+        board.classList.remove('hammer-cursor');
+      }
+    }
   }
 
   onCellClick() {
@@ -48,8 +55,12 @@ export default class GamePlay {
         if (fields[i].classList.contains('sprite')) {
           fields[i].classList.remove('sprite');
           this.countDead.textContent = +this.countDead.textContent + 1;
+
           this.setCursor(cursors.hammer);
-          setTimeout(() => this.setCursor(cursors.auto), 200);
+          setTimeout(() => {
+            this.setCursor(cursors.auto);
+          }, 200);
+
         } else {
           this.countLost.textContent = +this.countLost.textContent + 1;
         }

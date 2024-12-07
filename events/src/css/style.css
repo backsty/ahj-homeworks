@@ -12,6 +12,11 @@
   grid-auto-columns: 1fr;
   grid-auto-rows: 1fr;
   grid-gap: 10px;
+  cursor: pointer;
+}
+
+.hammer-cursor {
+  cursor: url("data:image/svg+xml;charset=utf8,${hammerSVG}") 16 16, pointer !important;
 }
 
 .field {
