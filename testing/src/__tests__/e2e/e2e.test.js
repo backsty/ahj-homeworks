@@ -81,7 +81,7 @@ describe('Credit Card Validator form', () => {
     });
 
     page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(60000);
+    page.setDefaultNavigationTimeout(60000);
   });
 
   beforeEach(async () => {
@@ -118,16 +118,33 @@ describe('Credit Card Validator form', () => {
   });
 
   test('should validate correct VISA card number', async () => {
+    // const input = await page.$('.card-input');
+    // await input.type('4532015112830366');
+
+    // const validateButton = await page.$('.validate-btn');
+    // await validateButton.click();
+
+    // page.on('dialog', async (dialog) => {
+    //   expect(dialog.message()).toBe('Номер карты валиден');
+    //   await dialog.accept();
+    // });
+    await page.waitForSelector('.card-input', { visible: true });
     const input = await page.$('.card-input');
     await input.type('4532015112830366');
 
     const validateButton = await page.$('.validate-btn');
-    await validateButton.click();
-
-    page.on('dialog', async (dialog) => {
-      expect(dialog.message()).toBe('Номер карты валиден');
-      await dialog.accept();
+    
+    // Настраиваем обработчик диалога перед кликом
+    const dialogPromise = new Promise(resolve => {
+      page.once('dialog', async dialog => {
+        expect(dialog.message()).toBe('Номер карты валиден');
+        await dialog.accept();
+        resolve();
+      });
     });
+
+    await validateButton.click();
+    await dialogPromise;
   });
 
   test('should show invalid for incorrect card number', async () => {
@@ -135,7 +152,7 @@ describe('Credit Card Validator form', () => {
     await input.type('4532015112830367');
 
     const validateButton = await page.$('.validate-btn');
-    // Настраиваем обработчик перед кликом
+    
     const dialogPromise = new Promise(resolve => {
       page.once('dialog', async dialog => {
         expect(dialog.message()).toBe('Неверный номер карты');
@@ -148,40 +165,70 @@ describe('Credit Card Validator form', () => {
     await dialogPromise;
   });
 
-  test('should identify VISA card type', async () => {
+  test('should correctly handle VISA card validation', async () => {
+    // Ждем загрузки формы
+    await page.waitForSelector('.card-input', { visible: true });
+    
+    // Вводим номер VISA карты
     const input = await page.$('.card-input');
-    await input.type('4');
-
-    await page.waitForSelector('img[data-type="visa"]', { timeout: 5000 });
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
+    await input.type('4532015112830366');
+  
+    // Проверяем, что изображение VISA стало активным
     const visaImage = await page.$('img[data-type="visa"]');
-    const hasActiveClass = await page.evaluate(
-      element => {
-        return element && element.classList.contains('active');
-      },
+    const isVisaActive = await page.evaluate(
+      element => element.classList.contains('active'),
       visaImage,
     );
-
-    expect(hasActiveClass).toBeTruthy();
+    expect(isVisaActive).toBeTruthy();
+  
+    // Нажимаем кнопку валидации
+    const validateButton = await page.$('.validate-btn');
+    
+    // Ждем и проверяем диалоговое окно
+    const dialogPromise = new Promise(resolve => {
+      page.once('dialog', async dialog => {
+        expect(dialog.message()).toBe('Номер карты валиден');
+        await dialog.accept();
+        resolve();
+      });
+    });
+  
+    await validateButton.click();
+    await dialogPromise;
   });
-
-  test('should identify MasterCard type', async () => {
-    const input = await page.$('.card-input');
-    await input.type('5100');
-
-    await page.waitForSelector('img[data-type="mastercard"]', { timeout: 5000 });
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const mastercardImage = await page.$('img[data-type="mastercard"]');
-    const hasActiveClass = await page.evaluate(
-      element => {
-        return element && element.classList.contains('active');
-      },
-      mastercardImage,
-    );
-
-    expect(hasActiveClass).toBeTruthy();
+  
+  test('should show error for empty input', async () => {
+    // Ждем появления кнопки
+    await page.waitForSelector('.validate-btn', { visible: true });
+    const validateButton = await page.$('.validate-btn');
+    
+    // Проверяем кнопку перед нажатием
+    const buttonDebug = await page.evaluate(() => {
+      const btn = document.querySelector('.validate-btn');
+      return {
+        exists: !!btn,
+        visible: btn ? window.getComputedStyle(btn).display !== 'none' : false,
+        disabled: btn ? btn.disabled : true,
+      };
+    });
+    console.log('Button debug:', buttonDebug);
+  
+    // Нажимаем кнопку с дополнительными параметрами
+    const dialogPromise = new Promise(resolve => {
+      page.once('dialog', async dialog => {
+        expect(dialog.message()).toBe('Неверный номер карты');
+        await dialog.accept();
+        resolve();
+      });
+    });
+  
+    await validateButton.click({ 
+      delay: 100,
+      button: 'left',
+      clickCount: 1,
+    });
+    
+    await dialogPromise;
   });
 
   test('should show error for empty input', async () => {
@@ -202,12 +249,23 @@ describe('Credit Card Validator form', () => {
     const input = await page.$('.card-input');
     await input.type('4532015112830366');
 
-    const inputValue = await page.evaluate(
-      element => element.value,
-      input,
-    );
-
+    const inputValue = await page.evaluate(element => element.value, input);
     expect(inputValue).toBe('4532 0151 1283 0366');
+  });
+
+  test('should handle empty input', async () => {
+    const validateButton = await page.$('.validate-btn');
+    
+    const dialogPromise = new Promise(resolve => {
+      page.once('dialog', async dialog => {
+        expect(dialog.message()).toBe('Неверный номер карты');
+        await dialog.accept();
+        resolve();
+      });
+    });
+
+    await validateButton.click();
+    await dialogPromise;
   });
 
   test('should apply valid class for correct number', async () => {

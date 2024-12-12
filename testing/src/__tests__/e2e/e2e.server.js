@@ -7,7 +7,6 @@ import config from '../../../webpack.config.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const server = new WebpackDevServer({
-  // static: './dist',
   static: {
     directory: path.join(__dirname, '../../../dist'),
   },
