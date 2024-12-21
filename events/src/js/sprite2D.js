@@ -1,11 +1,12 @@
 export default class Sprite {
-  constructor() {
+  constructor(boardEl) {
     this.sprite = 'sprite';
     this.positionSprite = -1;
+    this.boardEl = boardEl;
   }
 
   randomPositionSprite(size) {
-    const divs = document.querySelectorAll('.field');
+    const divs = this.boardEl.querySelectorAll('.field');
 
     const randomInt = Math.floor(Math.random() * (size ** 2));
     if (this.positionSprite >= 0) {

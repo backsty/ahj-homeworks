@@ -20,7 +20,5 @@ export default merge(baseConfig, {
     hot: true,
     historyApiFallback: true,
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
 });

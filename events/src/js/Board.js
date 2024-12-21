@@ -1,7 +1,7 @@
 export default class Board {
-  constructor() {
+  constructor(boardEl) {
     this.board = null;
-    this.boardEl = document.getElementById('board');
+    this.boardEl = boardEl;
   }
 
   initBoard(size) {
@@ -21,6 +21,10 @@ export default class Board {
   }
 
   renderBoard(board) {
+    if (!this.boardEl) {
+      throw new Error('boardEl is not defined');
+    }
+
     const fields = [];
     for (const [i, row] of board.entries()) {
       for (const [j, value] of row.entries()) {

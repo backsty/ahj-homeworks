@@ -1,39 +1,47 @@
-import GameBoard from './gameBoard.js';
+import GameBoard from './Board.js';
 import Sprite from './sprite2D.js';
 import cursors from './cursors.js';
+import Modal from './Modal.js';
 
 export default class GamePlay {
-  constructor() {
+  constructor(boardEl, modalEl, deadEl, lostEl) {
     this.size = 4;
-    this.modalElement = document.getElementById('modal');
-    this.countDead = null;
-    this.countLost = null;
+    this.boardEl = boardEl;
+    this.modalEl = modalEl;
+    this.countDead = deadEl;
+    this.countLost = lostEl;
     this.count = null;
   }
 
-  
   startGame() {
-    const board = new GameBoard();
+    if (!this.boardEl || !this.modalEl || !this.countDead || !this.countLost) {
+      throw new Error('One or more elements are not defined');
+    }
+
+    const board = new GameBoard(this.boardEl);
     board.initBoard(this.size);
 
-    const sprite = new Sprite();
-    
-    this.onCellClick();
-    this.onButtonClick();
-    
+    const sprite = new Sprite(this.boardEl);
+    const modal = new Modal(this.modalEl);
+
+    this.onCellClick(sprite);
+    this.onButtonClick(modal);
+
     this.gameInterval = setInterval(() => {
       sprite.randomPositionSprite(this.size);
-      
+
       this.countLost.textContent = +this.countLost.textContent + this.count;
-      
+
       if (this.count !== 1) {
-        setTimeout(this.count = 1, 1000);
+        setTimeout(() => {
+          this.count = 1;
+        }, 1000);
       }
-      
+
       this.checkWinner();
     }, 1000);
   }
-  
+
   setCursor(cursor) {
     const board = document.getElementById('board');
     if (board) {
@@ -47,8 +55,6 @@ export default class GamePlay {
 
   onCellClick() {
     const fields = document.querySelectorAll('.field');
-    this.countDead = document.getElementById('dead');
-    this.countLost = document.getElementById('lost');
 
     for (let i = 0; i < fields.length; i++) {
       fields[i].addEventListener('click', () => {
@@ -57,9 +63,12 @@ export default class GamePlay {
           this.countDead.textContent = +this.countDead.textContent + 1;
 
           this.setCursor(cursors.hammer);
+
+          fields[i].classList.add('hit');
           setTimeout(() => {
-            this.setCursor(cursors.auto);
+            fields[i].classList.remove('hit');
           }, 200);
+
 
         } else {
           this.countLost.textContent = +this.countLost.textContent + 1;
@@ -75,8 +84,8 @@ export default class GamePlay {
 
     for (const btn of resetButtons) {
       btn.addEventListener('click', () => {
-        if (!this.modalElement.classList.contains('hidden')) {
-          this.modalElement.classList.add('hidden');
+        if (!this.modalEl.classList.contains('hidden')) {
+          this.modalEl.classList.add('hidden');
         }
         this.reset();
         this.startGame();
@@ -101,9 +110,9 @@ export default class GamePlay {
   }
 
   showWinner(status) {
-    const header = this.modalElement.querySelector('h2');
+    const header = this.modalEl.querySelector('h2');
     header.textContent = status;
-    this.modalElement.classList.remove('hidden');
+    this.modalEl.classList.remove('hidden');
     clearInterval(this.gameInterval);
     this.reset();
   }

@@ -1,6 +1,7 @@
 export default {
     verbose: true,
     testEnvironment: 'jsdom',
+    setupFiles: ['./jest.setup.cjs'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
     transform: {
         '^.+\\.(js|jsx|mjs)$': 'babel-jest',
