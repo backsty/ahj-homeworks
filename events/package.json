@@ -12,6 +12,7 @@
     "start": "yarn webpack serve --config webpack.dev.js",
     "build": "yarn webpack --config webpack.prod.js",
     "watch": "yarn webpack --watch --config webpack.dev.js",
+    "dev": "yarn clean && yarn build && yarn start",
     "test": "yarn jest",
     "test:watch": "yarn jest --watch", 
     "test:coverage": "yarn jest --coverage",
