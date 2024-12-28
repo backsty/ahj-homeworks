@@ -1,14 +1,15 @@
-import path from 'path';
-import HtmlWebPackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import { fileURLToPath } from 'url';
+// import path from 'path';
+// import HtmlWebPackPlugin from 'html-webpack-plugin';
+// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+// import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+// import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const path = require('path');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-export default {
+module.exports = {
   entry: './src/index.js',
   target: 'web',
   output: {
@@ -46,8 +47,9 @@ export default {
     static: {
       directory: path.resolve(__dirname, 'dist'),
     },
+    compress: true,
     port: 9000,
-    open: true,
+    open: false,
     hot: true,
   },
   plugins: [
@@ -59,9 +61,5 @@ export default {
     new MiniCssExtractPlugin({
       filename: 'styles/[name].[contenthash].css',
     }),
-    process.env.ANALYZE === 'true' &&
-      new BundleAnalyzerPlugin({
-        analyzerPort: 8889,
-      }),
-  ].filter(Boolean),
+  ],
 };

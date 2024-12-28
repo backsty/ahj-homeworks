@@ -1,13 +1,15 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { merge } from 'webpack-merge';
-import webpack from 'webpack';
-import baseConfig from './webpack.config.js';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
+// import { merge } from 'webpack-merge';
+// import webpack from 'webpack';
+// import baseConfig from './webpack.config.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const path = require('path');
+const { merge } = require('webpack-merge');
+const webpack = require('webpack');
+const baseConfig = require('./webpack.config.js');
 
-export default merge(baseConfig, {
+module.exports =  merge(baseConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
@@ -16,7 +18,7 @@ export default merge(baseConfig, {
     },
     compress: true,
     port: 9000,
-    open: true,
+    open: false,
     hot: true,
     historyApiFallback: true,
   },
