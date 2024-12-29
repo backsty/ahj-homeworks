@@ -30,57 +30,43 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     strategy:
       matrix:
         project: [events, anim, dnd, docs, dom, env, forms, http, media, rxjs, sse-ws, workers, testing, yarn-cd]
-    defaults:
-      run:
-        working-directory: ${{ matrix.project }}
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
-          fetch-depth: 1
-          persist-credentials: true
+          ref: video
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-        timeout-minutes: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: Cache Yarn Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ matrix.project }}/node_modules
-            ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install Global Packages
-        run: npm install -g yarn
-        
       - name: Install Dependencies
-        run: yarn install --network-timeout 600000
+        working-directory: ${{ matrix.project }}
+        run: |
+          npm install -g yarn
+          yarn install --network-timeout 1000000
         env:
           CI: true
-          NODE_OPTIONS: "--max-old-space-size=8192"
+          NODE_OPTIONS: "--max-old-space-size=4096"
+        timeout-minutes: 15
 
-      - name: Build Project
+      - name: Build
+        working-directory: ${{ matrix.project }}
+        run: yarn build
         if: success()
-        run: yarn Build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist
+          folder: ${{ matrix.project }}/dist
           target-folder: ${{ matrix.project }}
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
