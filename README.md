@@ -19,3 +19,5 @@
 * [требования к домашним работам](requirements.md)
 * [список рекомендуемого ПО](software.md)
 * [инструкция по работе в терминале](terminal.md)
+
+[![Deploy Apps](https://github.com/backsty/ahj-homeworks/actions/workflows/deploy.yml/badge.svg)](https://github.com/backsty/ahj-homeworks/actions/workflows/deploy.yml)
