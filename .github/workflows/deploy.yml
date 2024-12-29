@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
   push:
-    branches: 
+    branches:
       - video
     paths:
       - 'events/**'
@@ -36,13 +36,13 @@ jobs:
         project: [events, anim, dnd, docs, dom, env, forms, http, media, rxjs, sse-ws, workers, testing, yarn-cd]
     defaults:
       run:
-        working-directory: ./${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: video
+          ref: ${{ github.ref }}
           fetch-depth: 0
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -51,35 +51,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: false
+          cache: 'yarn'
+
+      - name: Cache Yarn Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ matrix.project }}/node_modules
+            ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install Global Packages
         run: npm install -g yarn
         
-      - name: Configure Yarn
-        run: |
-          yarn config set network-timeout 600000
-          yarn config set registry https://registry.npmjs.org
-
       - name: Install Dependencies
-        run: |
-          cd ${{ matrix.project }}
-          yarn install --network-timeout 600000
+        run: yarn install --network-timeout 600000
         env:
           CI: true
           NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 30
 
       - name: Build Project
         if: success()
-        run: |
-          cd ${{ matrix.project }}
-          yarn build
+        run: yarn Build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: ${{ matrix.project }}/dist
+          folder: dist
           target-folder: ${{ matrix.project }}
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
