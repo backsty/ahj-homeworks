@@ -1,9 +1,3 @@
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-// import { merge } from 'webpack-merge';
-// import webpack from 'webpack';
-// import baseConfig from './webpack.config.js';
-
 const path = require('path');
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
