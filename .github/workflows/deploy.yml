@@ -58,7 +58,9 @@ jobs:
         timeout-minutes: 15
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn global add rimraf
+          yarn build
         if: success()
 
       - name: Deploy to GitHub Pages
