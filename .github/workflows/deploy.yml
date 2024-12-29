@@ -53,20 +53,28 @@ jobs:
           node-version: '20'
           cache: false
 
-      - name: Install dependencies
+      - name: Install Global Packages
+        run: npm install -g yarn
+        
+      - name: Configure Yarn
         run: |
-          npm install -g yarn
-          yarn config set network-timeout 300000
-          yarn install --frozen-lockfile --network-timeout 300000
-        continue-on-error: true
+          yarn config set network-timeout 600000
+          yarn config set registry https://registry.npmjs.org
+
+      - name: Install Dependencies
+        run: |
+          cd ${{ matrix.project }}
+          yarn install --network-timeout 600000
         env:
           CI: true
-          NODE_OPTIONS: "--max-old-space-size=4096"
-        timeout-minutes: 15
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        timeout-minutes: 30
 
-      - name: Build
-        run: yarn build
+      - name: Build Project
         if: success()
+        run: |
+          cd ${{ matrix.project }}
+          yarn build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
