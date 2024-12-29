@@ -1,0 +1,78 @@
+name: Deploy Apps
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: 
+      - video
+    paths:
+      - 'events/**'
+      - 'anim/**'
+      - 'dnd/**'
+      - 'docs/**'
+      - 'dom/**'
+      - 'env/**'
+      - 'forms/**'
+      - 'http/**'
+      - 'media/**'
+      - 'rxjs/**'
+      - 'sse-ws/**'
+      - 'workers/**'
+      - 'testing/**'
+      - 'yarn-cd/**'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
+    strategy:
+      matrix:
+        project: [events, anim, dnd, docs, dom, env, forms, http, media, rxjs, sse-ws, workers, testing, yarn-cd]
+    defaults:
+      run:
+        working-directory: ./${{ matrix.project }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: video
+          fetch-depth: 0
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: false  # отключаем кэш временно
+          check-latest: true  # проверяем последнюю версию
+          cache-dependency-path: ./${{ matrix.project }}/yarn.lock
+
+      - name: Install dependencies
+        run: |
+          npm install -g yarn
+          yarn install --no-cache --network-timeout 600000
+        continue-on-error: true
+        env:
+          CI: true
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        timeout-minutes: 60
+
+      - name: Build
+        run: yarn build
+        if: success()
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ${{ matrix.project }}/dist
+          target-folder: ${{ matrix.project }}
+          branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
