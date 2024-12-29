@@ -42,7 +42,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: video
           fetch-depth: 0
+          persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
