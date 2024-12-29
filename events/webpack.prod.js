@@ -1,17 +1,15 @@
-// import { merge } from 'webpack-merge';
-// import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-// import TerserPlugin from 'terser-webpack-plugin';
-// import baseConfig from './webpack.config.js';
-
-const { merge }  = require('webpack-merge');
-const CssMinimizerPlugin  = require('css-minimizer-webpack-plugin');
-const TerserPlugin  = require('terser-webpack-plugin');
-const baseConfig  = require('./webpack.config.js');
+const { merge } = require('webpack-merge');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const baseConfig = require('./webpack.config.js');
 
 
 module.exports = merge(baseConfig, {
   mode: 'production',
   devtool: 'source-map',
+  output: {
+    publicPath: '/events/',
+  },
   optimization: {
     minimize: true,
     minimizer: [

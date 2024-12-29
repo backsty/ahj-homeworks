@@ -78,5 +78,6 @@
   },
   "dependencies": {
     "core-js": "^3.39.0"
-  }
+  },
+  "homepage": "https://backsty.github.io/ahj-homeworks/events"
 }
