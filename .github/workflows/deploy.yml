@@ -50,11 +50,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --ignore-engines --network-timeout 100000
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --prefer-offline
         continue-on-error: true
+        env:
+          CI: true
+        timeout-minutes: 15
 
       - name: Build
         run: yarn build
+        if: success()
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
