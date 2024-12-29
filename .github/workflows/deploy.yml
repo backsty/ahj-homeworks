@@ -3,7 +3,7 @@ name: Deploy Apps
 on:
   push:
     branches: 
-      - gh-pages
+      - video
     paths:
       - 'events/**'
       - 'anim/**'
@@ -19,6 +19,13 @@ on:
       - 'workers/**'
       - 'testing/**'
       - 'yarn-cd/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
