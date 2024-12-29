@@ -48,16 +48,18 @@ jobs:
           node-version: '20'
           cache: false
 
-      - name: Clean and Install
+      - name: Install Global Packages
+        run: npm install -g yarn@latest
+
+      - name: Install Project Dependencies
         working-directory: ${{ matrix.project }}
         run: |
-          yarn cache clean
-          rm -rf node_modules
-          yarn install --network-timeout 600000
+          yarn config set network-timeout 1000000
+          yarn install --no-lockfile --ignore-engines
         env:
           CI: true
-          NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 30
+          NODE_OPTIONS: "--max-old-space-size=4096"
+        timeout-minutes: 15
 
       - name: Build
         working-directory: ${{ matrix.project }}
