@@ -48,17 +48,20 @@ jobs:
           node-version: '20'
           cache: 'yarn'
           cache-dependency-path: '**/yarn.lock'
+      
+      - name: Setup Yarn
+        run: |
+          npm install -g yarn@1.22.19
+          yarn config set network-timeout 1000000
 
       - name: Install Dependencies
         working-directory: ${{ matrix.project }}
         run: |
-          yarn set version 1.22.19
-          yarn config set network-timeout 600000
-          yarn install --frozen-lockfile
+          yarn install --prefer-offline --network-timeout 1000000
         env:
           CI: true
-          NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 30
+          NODE_OPTIONS: "--max-old-space-size=4096"
+        timeout-minutes: 15
 
       - name: Build
         working-directory: ${{ matrix.project }}
