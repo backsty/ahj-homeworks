@@ -6,18 +6,29 @@ on:
       - video
     paths:
       - 'events/**'
-      - 'other-project/**'  # добавляем другие проекты
-      - 'another-project/**'
+      - 'anim/**'
+      - 'dnd/**'
+      - 'docs/**'
+      - 'dom/**'
+      - 'env/**'
+      - 'forms/**'
+      - 'http/**'
+      - 'media/**'
+      - 'rxjs/**'
+      - 'sse-ws/**'
+      - 'workers/**'
+      - 'testing/**'
+      - 'yarn-cd/**'
 
 jobs:
   build-and-deploy:
     strategy:
       matrix:
-        project: [events, other-project, another-project]  # список проектов
+        project: [events, anim, dnd, docs, dom, env, forms, http, media, rxjs, sse-ws, workers, testing, yarn-cd]
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./${{ matrix.project }}  # динамический путь
+        working-directory: ./${{ matrix.project }}
 
     steps:
       - name: Checkout
