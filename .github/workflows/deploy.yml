@@ -46,17 +46,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          cache: false
 
-      - name: Install Dependencies
+      - name: Clean and Install
         working-directory: ${{ matrix.project }}
         run: |
-          npm install -g yarn
-          yarn install --network-timeout 1000000 --no-lockfile
+          yarn cache clean
+          rm -rf node_modules
+          yarn install --network-timeout 600000
         env:
           CI: true
-          NODE_OPTIONS: "--max-old-space-size=4096"
-        timeout-minutes: 15
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        timeout-minutes: 30
 
       - name: Build
         working-directory: ${{ matrix.project }}
