@@ -51,16 +51,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
-          cache-dependency-path: './events/yarn.lock'
+          cache: false
 
       - name: Install dependencies
         run: |
-          yarn install --frozen-lockfile
+          npm install -g yarn
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --network-timeout 300000
         continue-on-error: true
         env:
           CI: true
-          NODE_OPTIONS: "--max-old-space-size=8192"
+          NODE_OPTIONS: "--max-old-space-size=4096"
         timeout-minutes: 15
 
       - name: Build
