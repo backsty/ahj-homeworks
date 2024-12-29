@@ -51,19 +51,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: false  # отключаем кэш временно
-          check-latest: true  # проверяем последнюю версию
-          cache-dependency-path: ./${{ matrix.project }}/yarn.lock
+          cache: 'yarn'
+          cache-dependency-path: './events/yarn.lock'
 
       - name: Install dependencies
         run: |
-          npm install -g yarn
-          yarn install --no-cache --network-timeout 600000
+          yarn install --frozen-lockfile
         continue-on-error: true
         env:
           CI: true
           NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 60
+        timeout-minutes: 15
 
       - name: Build
         run: yarn build
