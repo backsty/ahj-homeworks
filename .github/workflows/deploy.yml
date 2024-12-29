@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
   push:
-    branches: 
+    branches:
       - video
     paths:
       - 'events/**'
@@ -30,21 +30,16 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     strategy:
       matrix:
         project: [events, anim, dnd, docs, dom, env, forms, http, media, rxjs, sse-ws, workers, testing, yarn-cd]
-    defaults:
-      run:
-        working-directory: ./${{ matrix.project }}
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: video
           fetch-depth: 0
-          persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
@@ -52,19 +47,21 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-          cache-dependency-path: ./${{ matrix.project }}/yarn.lock
+          cache-dependency-path: '**/yarn.lock'
 
-      - name: Install dependencies
+      - name: Install Dependencies
+        working-directory: ${{ matrix.project }}
         run: |
-          npm install -g yarn
+          yarn set version 1.22.19
+          yarn config set network-timeout 600000
           yarn install --frozen-lockfile
-        continue-on-error: true
         env:
           CI: true
           NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 60
+        timeout-minutes: 30
 
       - name: Build
+        working-directory: ${{ matrix.project }}
         run: yarn build
         if: success()
 
