@@ -29,10 +29,11 @@ permissions:
 
 jobs:
   build-and-deploy:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     strategy:
       matrix:
         project: [events, anim, dnd, docs, dom, env, forms, http, media, rxjs, sse-ws, workers, testing, yarn-cd]
-    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./${{ matrix.project }}
@@ -40,6 +41,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -50,7 +54,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --ignore-engines --ignore-optional --network-timeout 1000000 --no-lockfile
+          npm install -g yarn
+          yarn install --frozen-lockfile
         continue-on-error: true
         env:
           CI: true
