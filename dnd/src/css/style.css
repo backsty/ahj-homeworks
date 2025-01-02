@@ -1,0 +1,208 @@
+:root {
+    font-size: 16px;
+}
+
+@font-face {
+    font-family: 'Jonova-Regular';
+    src: url('../fonts/Jonova/Jonova-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Jonova-Bold';
+    src: url('../fonts/Jonova/Jonova-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Jonova-Italic';
+    src: url('../fonts/Jonova/Jonova-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Jonova-BoldItalic';
+    src: url('../fonts/Jonova/Jonova-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../img/main_bgc.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    font-family: 'Jonova-Bold', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.board {
+    display: flex;
+    gap: 2.5em;
+    padding: 2em;
+    background: transparent;
+    min-height: 100vh;
+}
+
+.column {
+    flex: 1;
+    background: #ebecf0;
+    border-radius: 0.9375em;
+    padding: 1em;
+    min-width: 15.625rem;
+    font-family: 'Jonova-Bold', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+.column h2 {
+    font-size: 1.375rem;
+    margin: 0.5em 0.25em;
+    color: #172b4d;
+}
+
+.cards-container {
+    min-height: 1.25rem;
+    padding: 0.25em 0.125em;
+}
+
+.card {
+    background: white;
+    padding: 0.75em 2em 0.75em 0.75em;
+    margin: 0.25em 0;
+    border-radius: 0.1875em;
+    box-shadow: 0 0.0625em 0 rgba(9,30,66,.25);
+    position: relative;
+    cursor: grab;
+    font-family: 'Jonova-Regular', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.card.dragged {
+    transform: rotate(3deg);
+    pointer-events: none;
+}
+
+.card-delete {
+    position: absolute;
+    right: 0.625em;
+    top: 0.4375em;
+    width: 1.875em;
+    height: 1.875em;
+    cursor: pointer;
+    display: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.card:hover .card-delete {
+    display: block;
+}
+
+.card-delete:hover {
+    opacity: 1;
+}
+
+.add-card {
+    width: 100%;
+    padding: 0.625em;
+    background: transparent;
+    border: none;
+    color: #5e6c84;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 3px;
+    font-family: 'Jonova-Regular', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.add-card:hover {
+    background: rgba(9,30,66,.08);
+    color: #172b4d;
+}
+
+.ghost-placeholder {
+    background-color: #ebecf0;
+    border-radius: 3px;
+    margin: 0.5em 0;
+    height: 2.5rem;
+    border: 0.125em dashed #5e6c84;
+}
+
+.add-card-form {
+    margin-top: 10px;
+    display: block;
+    padding: 0 4px;
+}
+
+.add-card-form.hidden {
+    display: none;
+}
+
+.card-input {
+    width: 100%;
+    min-height: 3.375rem;
+    padding: 0.5em;
+    border: none;
+    border-radius: 0.1875em;
+    resize: none;
+    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    font-family: 'Jonova-Regular', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.125rem;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+.form-controls {
+    margin-top: 0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.add-btn {
+    margin-right: 0.5em;
+    background: #5aac44;
+    color: white;
+    border: none;
+    padding: 0.375em 0.75em;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Jonova-Regular', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.add-btn:hover {
+    background: #61bd4f;
+}
+
+.cancel-btn {
+    background: none;
+    border: none;
+    font-size: 1.375rem;
+    cursor: pointer;
+    color: #6b778c;
+    font-family: 'Jonova-Regular', Arial, sans-serif;
+    font-weight: bold;
+}
+
+.cancel-btn:hover {
+    color: #172b4d;
+}
