@@ -1,6 +1,4 @@
-import { PopoverWidget } from './popover.js';
-
-console.log('app.js is bunled');
+import PopoverWidget from './popover.js';
 
 const popoverContainer = document.querySelector('.container');
 const popoverMessages = {
@@ -14,50 +12,59 @@ const popoverMessages = {
   },
 };
 
-const popoverFactory = new PopoverWidget();
+let popoverFactory = null;
 let activePopovers = [];
 
-const showPopover = (element) => {
+function showPopover(element) {
   const title = element.dataset.title || popoverMessages.default.title;
   const content = element.dataset.content || popoverMessages.default.content;
 
+  const id = popoverFactory.showPopover(title, content, element);
   activePopovers.push({
-    name: element,
-    id: popoverFactory.showPopover(title, content, element),
+    element,
+    id,
   });
-};
+}
 
-const removePopover = (element) => {
-  const currentPopover = activePopovers.find(item => item.element === element);
-  
-  if (currentPopover) {
-    popoverFactory.removePopover(currentPopover.id);
-    activePopovers = activePopovers.filter(item => item.id !== currentPopover.id);
+function removePopover(element) {
+  const popover = activePopovers.find(p => p.element === element);
+  if (popover) {
+    popoverFactory.removePopover(popover.id);
+    activePopovers = activePopovers.filter(p => p.id !== popover.id);
   }
-};
+}
 
-popoverContainer.addEventListener('click', (e) => {
-  const target = e.target.closest('[data-popover]');
+function removeAllPopovers() {
+  activePopovers.forEach(popover => {
+    popoverFactory.removePopover(popover.id);
+  });
+  activePopovers = [];
+}
 
+function handleClick(event) {
+  const target = event.target.closest('[data-popover]');
+  
   if (!target) {
-    activePopovers.forEach(popover => {
-      popoverFactory.removePopover(popover.id);
-    });
-    activePopovers = [];
+    removeAllPopovers();
     return;
   }
 
-  e.preventDefault();
+  event.preventDefault();
 
   const hasActivePopover = activePopovers.some(p => p.element === target);
-
   if (hasActivePopover) {
     removePopover(target);
   } else {
     showPopover(target);
   }
-});
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  new PopoverWidget();
+  try {
+    popoverFactory = new PopoverWidget();
+    popoverContainer.addEventListener('click', handleClick);
+    console.log('PopoverWidget initialized successfully');
+  } catch (error) {
+    console.error('Failed to initialize PopoverWidget:', error);
+  }
 });

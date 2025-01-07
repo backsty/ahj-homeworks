@@ -8,7 +8,7 @@ module.exports = merge(baseConfig, {
   mode: 'production',
   devtool: 'source-map',
   output: {
-    publicPath: '/events/',
+    publicPath: '/dom/',
   },
   optimization: {
     minimize: true,

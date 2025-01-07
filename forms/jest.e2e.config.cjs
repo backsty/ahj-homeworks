@@ -3,9 +3,9 @@ module.exports = {
     rootDir: '.',
     testMatch: ['<rootDir>/src/__tests__/e2e/**/*.test.js'],
     transform: {
-        '^.+\\.js$': 'babel-jest'
+        '^.+\\.js$': ['babel-jest', { configFile: './.babelrc' }]
     },
     setupFiles: ['<rootDir>/jest.setup.cjs'],
     testTimeout: 30000,
-    moduleFileExtensions: ['js', 'cjs', 'mjs'],
+    moduleFileExtensions: ['js', 'cjs', 'mjs']
 };
