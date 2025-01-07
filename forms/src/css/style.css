@@ -64,7 +64,8 @@
     transform: translateX(-50%);
     border-width: 10px 10px 0;
     border-style: solid;
-    border-color: #fff transparent transparent;
+    border-color: #fff;
+    border-color: transparent transparent transparent;
     z-index: 1;
 }
 
