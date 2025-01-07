@@ -1,7 +1,7 @@
 import PageController from './PageController.js';
 import PageUi from './PageUi.js';
 import StateService from './StateService.js';
-import data from './Utils.js';
+import data from './utils.js';
 
 const stateService = new StateService(localStorage);
 const pageUi = new PageUi(data);
