@@ -8,19 +8,11 @@ on:
       - video
     paths:
       - 'events/**'
-      - 'anim/**'
       - 'dnd/**'
-      - 'docs/**'
       - 'dom/**'
-      - 'env/**'
       - 'forms/**'
-      - 'http/**'
-      - 'media/**'
-      - 'rxjs/**'
-      - 'sse-ws/**'
-      - 'workers/**'
       - 'testing/**'
-      - 'yarn-cd/**'
+      - 'sortable-movies/**'
 
 permissions:
   contents: write
