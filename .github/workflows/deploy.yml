@@ -1,0 +1,81 @@
+name: Deploy Apps
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: 
+      - video
+    paths:
+      - 'events/**'
+      - 'dnd/**'
+      - 'dom/**'
+      - 'forms/**'
+      - 'testing/**'
+      - 'sortable-movies/**'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [events, dnd, dom, forms, testing, sortable-movies]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: video
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
+
+      - name: Install Dependencies
+        working-directory: ${{ matrix.project }}
+        run: |
+          yarn --version
+          yarn config set network-timeout 300000
+          yarn install --frozen-lockfile --non-interactive
+        env:
+          CI: true
+          NODE_OPTIONS: "--max-old-space-size=4096"
+        timeout-minutes: 15
+
+      - name: Build
+        working-directory: ${{ matrix.project }}
+        if: success()
+        run: yarn build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ${{ matrix.project }}/dist
+          target-folder: ${{ matrix.project }}
+          branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
