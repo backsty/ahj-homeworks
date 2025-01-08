@@ -2,17 +2,9 @@ name: Deploy Apps
 
 on:
   workflow_dispatch:
-
   push:
     branches: 
       - video
-    paths:
-      - 'events/**'
-      - 'dnd/**'
-      - 'dom/**'
-      - 'forms/**'
-      - 'testing/**'
-      - 'sortable-movies/**'
 
 permissions:
   contents: write
@@ -42,7 +34,7 @@ jobs:
           cache-dependency-path: '**/yarn.lock'
 
       - name: Cache node_modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
