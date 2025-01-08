@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const baseConfig = require('./webpack.config.js');
+const baseConfig = require('./webpack.config.cjs');
 
 
 module.exports = merge(baseConfig, {
