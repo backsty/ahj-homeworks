@@ -1,22 +1,31 @@
-image: Ubuntu1804  # образ для сборки
+image: Ubuntu2204
 
-stack: node 20  # окружение
+stack: node 20
 
 branches:
   only:
-    - master  # ветка git
+    - video
 
 cache:
-  - node_modules  # кеширование
+  - node_modules
 
 install:
-  - npm install  # команда установки зависимостей
+  - yarn install
 
-build: false  # отключаем встроенную в appveyor систему сборки
+build: false
 
 build_script:
-  - npm run build   # команда сборки
+  - yarn build
 
 test_script:
-  - npm run lint
-  - npm test  # скрипт тестирования
+  - yarn lint
+  - yarn test
+
+deploy_script:
+  # Настройка Git для деплоя подпапки
+  - git config --global user.name AppVeyor
+  - git config --global user.email ci@appveyor.com
+  - git config --global credential.helper store
+  - echo "https://$GITHUB_TOKEN:x-oauth-basic@github.com" > "$HOME/.git-credentials"
+  # Деплой только папки events из общего репозитория
+  - npx gh-pages -d events/dist -u "appveyor-bot <ci@appveyor.com>" -e events
