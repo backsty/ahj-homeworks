@@ -9,6 +9,7 @@ module.exports =  merge(baseConfig, {
   devServer: {
     static: {
       directory: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
     },
     compress: true,
     port: 8080,
