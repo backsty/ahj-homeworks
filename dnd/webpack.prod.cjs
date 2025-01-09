@@ -10,6 +10,7 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   output: {
     publicPath: ASSET_PATH,
+    clean: true,
   },
   optimization: {
     minimize: true,
