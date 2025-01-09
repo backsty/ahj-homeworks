@@ -64,3 +64,5 @@ jobs:
           target-folder: ${{ matrix.project }}
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
+          clean: true
+          force: true
