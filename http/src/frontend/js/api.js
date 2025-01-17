@@ -1,6 +1,8 @@
 export default class TicketApi {
   constructor() {
-    this.baseUrl = 'https://ahj-backend.herokuapp.com/tickets';
+    this.baseUrl = window.location.hostname === 'localhost'
+      ? 'http://localhost:7070/tickets'
+      : 'https://ahj-backend.herokuapp.com/tickets';
   }
 
   async fetchWithConfig(url, options = {}) {
@@ -14,9 +16,7 @@ export default class TicketApi {
 
     try {
       const response = await fetch(url, { ...defaultOptions, ...options });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       return response.json();
     } catch (error) {
       console.error(`API Error: ${error.message}`);
