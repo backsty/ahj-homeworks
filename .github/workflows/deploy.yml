@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [events, dnd, dom, forms, testing, sortable-movies, http]
+        project: [events, dnd, dom, forms, testing, sortable-movies]
     
     steps:
       - name: Checkout
@@ -57,17 +57,7 @@ jobs:
         if: success()
         run: yarn build
 
-      # - name: Deploy
-      #   uses: JamesIves/github-pages-deploy-action@v4
-      #   with:
-      #     folder: ${{ matrix.project }}/dist
-      #     target-folder: ${{ matrix.project }}
-      #     branch: gh-pages
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     clean: true
-      #     force: true
-
-      - name: Deploy Frontend to GitHub Pages
+      - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ${{ matrix.project }}/dist
@@ -76,21 +66,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
           force: true
-
-      - name: Install Heroku CLI
-        if: matrix.project == 'http'
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-
-      - name: Deploy Backend to Heroku
-        if: matrix.project == 'http'
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-        run: |
-          cd http/backend
-          git init
-          git add .
-          git commit -m "Deploy backend"
-          heroku git:remote -a ahj-backend
-          git push heroku main --force

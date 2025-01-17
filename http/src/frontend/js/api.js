@@ -1,59 +1,56 @@
 export default class TicketApi {
-  constructor() {
-    this.baseUrl = window.location.hostname === 'localhost'
-      ? 'http://localhost:7070/tickets'
-      : 'https://ahj-backend.herokuapp.com/tickets';
-  }
-
-  async fetchWithConfig(url, options = {}) {
-    const defaultOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'cors',
-      credentials: 'include'
-    };
-
-    try {
-      const response = await fetch(url, { ...defaultOptions, ...options });
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return response.json();
-    } catch (error) {
-      console.error(`API Error: ${error.message}`);
-      throw error;
-    }
+  constructor(baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
   async getAllTickets() {
-    try {
-      return await this.fetchWithConfig(`${this.baseUrl}?method=allTickets`);
-    } catch (error) {
-      console.error('Failed to fetch tickets:', error);
-      return [];
+    const response = await fetch(`${this.baseUrl}?method=allTickets`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    return await response.json();
   }
 
   async getTicketById(id) {
-    return this.fetchWithConfig(`${this.baseUrl}?method=ticketById&id=${id}`);
+    const response = await fetch(`${this.baseUrl}?method=ticketById&id=${id}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
   }
 
   async createTicket(data) {
-    return this.fetchWithConfig(`${this.baseUrl}?method=createTicket`, {
+    const response = await fetch(`${this.baseUrl}?method=createTicket`, {
       method: 'POST',
-      body: JSON.stringify(data)
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
+    return await response.json();
   }
 
   async updateTicket(id, data) {
-    return this.fetchWithConfig(`${this.baseUrl}?method=updateTicket&id=${id}`, {
+    const response = await fetch(`${this.baseUrl}?method=updateTicket&id=${id}`, {
       method: 'PUT',
-      body: JSON.stringify(data)
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
   }
-
+  
   async deleteTicket(id) {
-    return this.fetchWithConfig(`${this.baseUrl}?method=deleteTicket&id=${id}`, {
-      method: 'DELETE'
+    const response = await fetch(`${this.baseUrl}?method=deleteTicket&id=${id}`, {
+      method: 'DELETE',
     });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
   }
 };

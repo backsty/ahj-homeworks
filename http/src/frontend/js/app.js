@@ -5,7 +5,7 @@ import StateManager from './StateManager.js';
 
 export default class App {
     constructor() {
-        this.api = new API();
+        this.api = new API('http://localhost:7070/tickets');
         this.modal = new Modal();
         this.ticketView = new TicketView(document.querySelector('.container'));
         this.stateManager = new StateManager();
