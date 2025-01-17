@@ -77,11 +77,20 @@ jobs:
           clean: true
           force: true
 
+      - name: Install Heroku CLI
+        if: matrix.project == 'http'
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
       - name: Deploy Backend to Heroku
         if: matrix.project == 'http'
-        uses: akhileshns/heroku-deploy@v3.12.14
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "ahj-backend"
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          appdir: "http/backend"
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+        run: |
+          cd http/backend
+          git init
+          git add .
+          git commit -m "Deploy backend"
+          heroku git:remote -a ahj-backend
+          git push heroku main --force
