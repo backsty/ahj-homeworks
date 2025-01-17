@@ -1,8 +1,6 @@
 export default class TicketApi {
   constructor() {
-    this.baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:7070/tickets'
-      : 'https://ahj-backend.herokuapp.com/tickets';
+    this.baseUrl = 'https://ahj-backend.herokuapp.com/tickets';
   }
 
   async fetchWithConfig(url, options = {}) {
