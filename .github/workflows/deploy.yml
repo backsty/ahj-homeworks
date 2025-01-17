@@ -57,7 +57,17 @@ jobs:
         if: success()
         run: yarn build
 
-      - name: Deploy
+      # - name: Deploy
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: ${{ matrix.project }}/dist
+      #     target-folder: ${{ matrix.project }}
+      #     branch: gh-pages
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     clean: true
+      #     force: true
+
+      - name: Deploy Frontend to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ${{ matrix.project }}/dist
@@ -66,3 +76,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
           force: true
+
+      - name: Deploy Backend to Heroku
+        if: matrix.project == 'http'
+        uses: akhileshns/heroku-deploy@v3.12.14
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "ahj-backend"
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          appdir: "http/backend"
