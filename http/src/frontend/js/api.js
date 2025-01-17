@@ -1,14 +1,22 @@
 export default class TicketApi {
   constructor(baseUrl) {
-    this.baseUrl = baseUrl;
+    // this.baseUrl = baseUrl;
+    this.baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:7070/tickets'
+      : 'https://ahj-backend.herokuapp.com/tickets';
   }
 
   async getAllTickets() {
-    const response = await fetch(`${this.baseUrl}?method=allTickets`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await fetch(`${this.baseUrl}?method=allTickets`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch tickets:', error);
+      return [];
     }
-    return await response.json();
   }
 
   async getTicketById(id) {
