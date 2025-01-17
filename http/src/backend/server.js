@@ -18,13 +18,14 @@ app.use(cors({
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  exposeHeaders: ['Content-Length', 'Date', 'X-Request-Id']
 }));
 
 app.use(cors());
 app.use(koaBody({
-  urlencoded: true,
-  multipart: true,
   json: true,
+  urlencoded: true,
+  multipart: true
 }));
 
 app.use(tickets.routes());

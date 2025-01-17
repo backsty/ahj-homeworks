@@ -14,13 +14,16 @@ export default class TicketApi {
       credentials: 'include'
     };
 
-    const response = await fetch(url, { ...defaultOptions, ...options });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await fetch(url, { ...defaultOptions, ...options });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error(`API Error: ${error.message}`);
+      throw error;
     }
-    
-    return response.json();
   }
 
   async getAllTickets() {
