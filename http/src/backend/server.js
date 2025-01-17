@@ -10,8 +10,7 @@ app.use(cors({
     const validDomains = [
       'http://localhost:8080',
       'http://localhost:9000',
-      'https://backsty.github.io',
-      'https://backsty.github.io/ahj-homeworks/http/'
+      'https://backsty.github.io'
     ];
     const origin = ctx.request.header.origin;
     return validDomains.includes(origin) ? origin : false;
@@ -22,7 +21,6 @@ app.use(cors({
   exposeHeaders: ['Content-Length', 'Date', 'X-Request-Id']
 }));
 
-app.use(cors());
 app.use(koaBody({
   json: true,
   urlencoded: true,
@@ -33,7 +31,6 @@ app.use(tickets.routes());
 app.use(tickets.allowedMethods());
 
 const PORT = process.env.PORT || 7070;
-
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
 });
