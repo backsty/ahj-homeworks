@@ -10,7 +10,8 @@ app.use(cors({
     const validDomains = [
       'http://localhost:8080',
       'http://localhost:9000',
-      'https://backsty.github.io'
+      'https://backsty.github.io',
+      'https://backsty.github.io/ahj-homeworks/http/'
     ];
     const origin = ctx.request.header.origin;
     return validDomains.includes(origin) ? origin : false;
