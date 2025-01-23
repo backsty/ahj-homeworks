@@ -1,0 +1,19 @@
+@import './components/collapse.css';
+@import './components/feedback.css';
+@import './components/liker.css';
+
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h2 {
+  margin: 30px 0 20px;
+}
+
+#liker-container {
+  margin-top: 50px;
+  text-align: center;
+}

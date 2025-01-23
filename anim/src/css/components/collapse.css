@@ -1,0 +1,20 @@
+.collapse {
+  margin-bottom: 1rem;
+}
+
+.collapse__button {
+  width: 100%;
+  padding: 1rem;
+  background: #f0f0f0;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.collapse__button:hover {
+  background: #e0e0e0;
+}
+
+.collapse__content {
+  padding: 0 1rem;
+}
