@@ -9,7 +9,8 @@ describe('PopoverWidget', () => {
   let button;
 
   beforeEach(() => {
-    dom = new JSDOM(`
+    dom = new JSDOM(
+      `
       <!DOCTYPE html>
       <html>
         <body>
@@ -23,11 +24,13 @@ describe('PopoverWidget', () => {
           </div>
         </body>
       </html>
-    `, { 
-      url: 'http://localhost',
-      runScripts: 'dangerously',
-      resources: 'usable',
-    });
+    `,
+      {
+        url: 'http://localhost',
+        runScripts: 'dangerously',
+        resources: 'usable',
+      }
+    );
 
     document = dom.window.document;
     window = dom.window;
@@ -53,7 +56,7 @@ describe('PopoverWidget', () => {
 
   test('создание popover при клике', () => {
     const id = widget.showPopover('Test Title', 'Test Content', button);
-    
+
     const popover = document.querySelector('.popover');
     expect(popover).not.toBeNull();
     expect(widget._popovers.length).toBe(1);
@@ -63,7 +66,7 @@ describe('PopoverWidget', () => {
   test('удаление popover', () => {
     const id = widget.showPopover('Test Title', 'Test Content', button);
     widget.removePopover(id);
-    
+
     expect(document.querySelector('.popover')).toBeNull();
     expect(widget._popovers.length).toBe(0);
   });

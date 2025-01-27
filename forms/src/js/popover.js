@@ -5,9 +5,9 @@ export default class PopoverWidget {
   }
 
   init() {
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
       const trigger = e.target.closest('[data-popover]');
-      
+
       if (!trigger) {
         this.removeAllPopovers();
         return;
@@ -22,7 +22,7 @@ export default class PopoverWidget {
 
   togglePopover(title, content, element) {
     const existingPopover = this._popovers.find(p => p.trigger === element);
-    
+
     if (existingPopover) {
       this.removePopover(existingPopover.id);
       return;
@@ -34,7 +34,7 @@ export default class PopoverWidget {
   showPopover(title, content, element) {
     const popoverElement = document.createElement('div');
     popoverElement.classList.add('popover');
-    
+
     popoverElement.innerHTML = `
       <h3 class="popover-header">${title}</h3>
       <div class="popover-body">${content}</div>
@@ -43,7 +43,7 @@ export default class PopoverWidget {
     const id = performance.now();
     const updatePosition = () => {
       const { left, top, width } = element.getBoundingClientRect();
-      popoverElement.style.left = `${left + width/2}px`;
+      popoverElement.style.left = `${left + width / 2}px`;
       popoverElement.style.top = `${window.scrollY + top}px`;
     };
 
@@ -67,7 +67,7 @@ export default class PopoverWidget {
     const popover = this._popovers.find(p => p.id === id);
 
     if (!popover) return;
-    
+
     if (popover) {
       popover.element.remove();
       this._popovers = this._popovers.filter(p => p.id !== id);
@@ -78,4 +78,4 @@ export default class PopoverWidget {
     this._popovers.forEach(popover => popover.element.remove());
     this._popovers = [];
   }
-};
+}

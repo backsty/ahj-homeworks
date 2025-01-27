@@ -43,7 +43,7 @@ function removeAllPopovers() {
 
 function handleClick(event) {
   const target = event.target.closest('[data-popover]');
-  
+
   if (!target) {
     removeAllPopovers();
     return;
