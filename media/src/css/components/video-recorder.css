@@ -1,0 +1,121 @@
+.video-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+}
+
+.video-post {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.video-wrapper {
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  position: relative;
+  height: 0;
+}
+
+video.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-player {
+  width: 10%;
+  height: 10%;
+  object-fit: cover;
+  background: #000;
+}
+
+.recording-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  border-radius: var(--border-radius);
+}
+
+.ok-button,
+.cancel-button {
+  background: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.ok-button {
+  background: var(--secondary-color);
+}
+
+.cancel-button {
+  background: var(--danger-color);
+}
+
+.timer {
+  font-family: monospace;
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--text-color);
+  padding: 0 var(--spacing-md);
+  min-width: 60px;
+  text-align: center;
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.recording .video-button {
+  animation: pulseVideo 1.5s infinite;
+}
+
+@keyframes pulseVideo {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.video-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin-top: var(--spacing-md);
+}
+
+@media (max-width: 480px) {
+  .ok-button,
+  .cancel-button {
+    padding: var(--spacing-sm);
+  }
+
+  .ok-button img,
+  .cancel-button img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .timer {
+    font-size: var(--font-size-md);
+    min-width: 50px;
+    padding: 0 var(--spacing-sm);
+  }
+}
