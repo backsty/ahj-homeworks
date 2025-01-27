@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [events, dnd, dom, forms, testing, sortable-movies, anim]
+        project: [events, dnd, dom, forms, testing, sortable-movies, anim, media]
     
     steps:
       - name: Checkout
