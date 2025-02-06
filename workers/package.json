@@ -16,10 +16,13 @@
     "devDependencies": {
         "concurrently": "^9.1.2"
     },
-    "workspaces": [
-        "frontend",
-        "backend"
-    ],
+    "workspaces": {
+        "packages": [
+            "frontend",
+            "backend"
+        ],
+        "nohoist": ["**"]
+    },
     "author": "backsty",
     "license": "MIT"
 }
