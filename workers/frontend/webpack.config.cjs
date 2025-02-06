@@ -78,7 +78,11 @@ module.exports = {
       chunkFilename: 'css/[id].[contenthash].css',
     }),
     new webpack.DefinePlugin({
-      'process.env.API_URL': JSON.stringify(process.env.API_URL || 'http://localhost:3000/api')
+      'process.env.API_URL': JSON.stringify(
+        process.env.NODE_ENV === 'production'
+          ? 'https://ahj-homeworks-backend.onrender.com/api'
+          : 'http://localhost:3000/api'
+      )
     }),
     ...(!isDevelopment ? [
       new GenerateSW({
@@ -86,7 +90,7 @@ module.exports = {
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         runtimeCaching: [{
-          urlPattern: new RegExp('http://localhost:3000/'),
+          urlPattern: new RegExp('https://ahj-homeworks-backend.onrender.com/'),
           handler: 'NetworkFirst',
           options: {
             cacheName: 'api-cache',

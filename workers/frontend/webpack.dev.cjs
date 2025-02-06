@@ -17,10 +17,7 @@ module.exports =  merge(baseConfig, {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
-      'Content-Security-Policy': "default-src 'self' http://localhost:3000; connect-src 'self' http://localhost:3000; worker-src 'self' blob: 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;"
-    },
-    static: {
-      directory: './dist',
+      'Content-Security-Policy': "default-src 'self' http://localhost:3000 https://ahj-homeworks-backend.onrender.com; connect-src 'self' http://localhost:3000 https://ahj-homeworks-backend.onrender.com; worker-src 'self' blob: 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:;"
     },
     compress: true,
     port: 8080,
