@@ -1,0 +1,25 @@
+{
+    "name": "loading-interface",
+    "version": "1.0.0",
+    "description": "loading-interface",
+    "private": true,
+    "scripts": {
+        "install:all": "concurrently \"cd backend && yarn install\" \"cd frontend && yarn install\"",
+        "start:backend": "cd backend && yarn dev",
+        "start:frontend": "cd frontend && yarn start",
+        "start": "concurrently \"yarn start:backend\" \"yarn start:frontend\"",
+        "format": "concurrently \"cd backend && yarn format\" \"cd frontend && yarn format\"",
+        "build": "cd frontend && yarn build",
+        "deploy": "cd frontend && yarn deploy",
+        "clean": "concurrently \"cd backend && yarn clean\" \"cd frontend && yarn clean\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    },
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
+    "author": "backsty",
+    "license": "MIT"
+}
