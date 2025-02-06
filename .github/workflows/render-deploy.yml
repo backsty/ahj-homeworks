@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-          cache-dependency-path: 'workers/backend/yarn.lock'
+          cache-dependency-path: './workers/yarn.lock'
 
       - name: Install Dependencies
         working-directory: workers/backend
