@@ -1,0 +1,38 @@
+name: Deploy Backend to Render
+
+on:
+  push:
+    branches:
+      - video
+    paths:
+      - 'workers/backend/**'
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: video
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: 'workers/backend/yarn.lock'
+
+      - name: Install Dependencies
+        working-directory: workers/backend
+        run: |
+          yarn install --frozen-lockfile --non-interactive
+        env:
+          CI: true
+
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
