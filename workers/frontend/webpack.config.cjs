@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+const ASSET_PATH = isDevelopment ? '/' : '/ahj-homeworks/workers/frontend/';
 
 module.exports = {
   entry: './src/index.js',
@@ -13,9 +14,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
-    publicPath: isDevelopment 
-      ? '/' 
-      : '/ahj-homeworks/workers/frontend/',
+    publicPath: ASSET_PATH,
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],

@@ -11,7 +11,7 @@ module.exports =  merge(baseConfig, {
   devServer: {
     static: {
       directory: path.resolve(__dirname, 'dist'),
-      publicPath: '/',
+      // publicPath: '/',
     },
     headers: {
       "Access-Control-Allow-Origin": "*",

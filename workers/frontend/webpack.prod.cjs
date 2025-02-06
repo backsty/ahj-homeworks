@@ -3,13 +3,13 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const baseConfig = require('./webpack.config.cjs');
 
-const ASSET_PATH = process.env.ASSET_PATH || '/ahj-homeworks/workers/';
+// const ASSET_PATH = process.env.ASSET_PATH || '/ahj-homeworks/workers/';
 
 module.exports = merge(baseConfig, {
   mode: 'production',
   devtool: 'source-map',
   output: {
-    publicPath: ASSET_PATH,
+    // publicPath: ASSET_PATH,
     clean: true
   },
   optimization: {
