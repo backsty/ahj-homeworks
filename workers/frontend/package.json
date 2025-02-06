@@ -4,7 +4,7 @@
   "description": "Frontend for workers demo",
   "repository": {
     "type": "git",
-    "url": "https://github.com/backsty/ahj-homeworks/tree/video/workers"
+    "url": "https://backsty.github.io/ahj-homeworks/workers/frontend/"
   },
   "main": "./src/index.js",
   "private": true,
@@ -55,5 +55,5 @@
     "core-js": "^3.40.0",
     "workbox-window": "^7.3.0"
   },
-  "homepage": "https://backsty.github.io/ahj-homeworks/workers"
+  "homepage": "https://backsty.github.io/ahj-homeworks/workers/frontend/"
 }
