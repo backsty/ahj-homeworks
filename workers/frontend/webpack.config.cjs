@@ -13,7 +13,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
-    publicPath: '/ahj-homeworks/workers/frontend/',
+    publicPath: isDevelopment 
+      ? '/' 
+      : '/ahj-homeworks/workers/frontend/',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
