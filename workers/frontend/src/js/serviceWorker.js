@@ -17,7 +17,7 @@ export async function registerServiceWorker() {
         const wb = new Workbox(swPath, {
             scope: isDevelopment ? '/' : '/ahj-homeworks/workers/frontend/'
         });
-        
+
         await wb.register();
 
         wb.addEventListener('installed', event => {
@@ -52,7 +52,12 @@ registerRoute(
 
 // Кэширование Api запросов
 registerRoute(
-    ({url}) => url.pathname.startsWith('/api/'),
+    ({url}) => {
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        return isDevelopment 
+            ? url.hostname === 'localhost' && url.port === '3000'
+            : url.hostname === 'ahj-homeworks-backend.onrender.com';
+    },
     new NetworkFirst({
         cacheName: 'api-cache',
         plugins: [

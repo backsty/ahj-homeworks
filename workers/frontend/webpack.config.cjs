@@ -79,10 +79,11 @@ module.exports = {
       chunkFilename: 'css/[id].[contenthash].css',
     }),
     new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.API_URL': JSON.stringify(
-        process.env.NODE_ENV === 'production'
-          ? 'https://ahj-homeworks-backend.onrender.com/api'
-          : 'http://localhost:3000/api'
+          process.env.NODE_ENV === 'production'
+              ? 'https://ahj-homeworks-backend.onrender.com/api'
+              : 'http://localhost:3000/api'
       )
     }),
     ...(!isDevelopment ? [

@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production';
+
 const { merge } = require('webpack-merge');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
