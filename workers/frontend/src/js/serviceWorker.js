@@ -9,7 +9,12 @@ export async function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) return;
 
     try {
-        const wb = new Workbox('/ahj-homeworks/workers/frontend/service-worker.js');
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        const swPath = isDevelopment 
+            ? '/service-worker.js'
+            : '/ahj-homeworks/workers/frontend/service-worker.js';
+            
+        const wb = new Workbox(swPath);
         await wb.register();
 
         wb.addEventListener('installed', event => {
