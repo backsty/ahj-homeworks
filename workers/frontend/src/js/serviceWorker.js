@@ -14,7 +14,10 @@ export async function registerServiceWorker() {
             ? '/service-worker.js'
             : '/ahj-homeworks/workers/frontend/service-worker.js';
             
-        const wb = new Workbox(swPath);
+        const wb = new Workbox(swPath, {
+            scope: isDevelopment ? '/' : '/ahj-homeworks/workers/frontend/'
+        });
+        
         await wb.register();
 
         wb.addEventListener('installed', event => {

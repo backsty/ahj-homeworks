@@ -91,7 +91,6 @@ module.exports = {
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         swDest: 'service-worker.js',
-        scope: isDevelopment ? '/' : '/ahj-homeworks/workers/frontend/',
         runtimeCaching: [{
           urlPattern: new RegExp('https://ahj-homeworks-backend.onrender.com/api/'),
           handler: 'NetworkFirst',
