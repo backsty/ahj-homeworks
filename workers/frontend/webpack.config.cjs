@@ -90,8 +90,10 @@ module.exports = {
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        swDest: 'service-worker.js',
+        scope: '/ahj-homeworks/workers/frontend/',
         runtimeCaching: [{
-          urlPattern: new RegExp('https://ahj-homeworks-backend.onrender.com/'),
+          urlPattern: new RegExp('https://ahj-homeworks-backend.onrender.com/api/'),
           handler: 'NetworkFirst',
           options: {
             cacheName: 'api-cache',
@@ -100,7 +102,8 @@ module.exports = {
               maxAgeSeconds: 24 * 60 * 60
             }
           }
-        }]
+        }],
+        exclude: [/\.map$/, /asset-manifest\.json$/]
       })
     ] : [])
   ],
